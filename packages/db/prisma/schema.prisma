@@ -11,8 +11,8 @@ datasource db {
 model User {
   id        String  @id @default(uuid())
   name      String  
-  photo     String
-  email     String
+  photo     String?
+  username  String  @unique
   password  String
   rooms     Room[]  //A user can have multiple Rooms (one to many relationship) but a room can a one user
   chats     Chat[]
@@ -30,6 +30,7 @@ model Room {
 model Chat {
   id        Int     @id @default(autoincrement())     
   message   String
+  sentAt    DateTime @default(now())
   roomId    Int
   userId    String
   room      Room    @relation(fields: [roomId], references: [id])

@@ -22,7 +22,8 @@ export function middleware (req: Request, res: Response, next: NextFunction) {
 
     try {
         // 3. Verify the token
-        const decodedToken = jwt.verify(token, JWT_SECRET)
+        const decodedToken = jwt.verify(token, JWT_SECRET) as { userId : string }
+        // @ts-ignore
         req.userId = decodedToken.userId
 
         // 4. continue
