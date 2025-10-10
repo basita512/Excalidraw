@@ -5,10 +5,19 @@ import { middleware } from './middleware';
 import { createUserSchema, signinUserSchema, createRoomSchema } from '@repo/comman/types';
 import { prismaClient } from '@repo/db/client';
 import bcrypt from 'bcrypt'
+import cors from 'cors'
 
 const saltRounds = 10
 const app = express();
 app.use(express.json())
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, 
+  })
+);
 
 
 //----------------------------- When user Sign-up -----------------------------------------
@@ -181,6 +190,22 @@ app.get('/chats/:roomId', async (req, res) => {
 
     res.status(200).json({
         messages
+    })
+})
+
+
+// ----------------------------To Find the room where user wants to join ---------------------------
+
+app.get('/room/:slug', async (req, res) => {
+    const slug = req.params.slug
+    const roomId = await prismaClient.room.findFirst({
+        where : {
+            slug
+        }
+    })
+
+    res.status(200).json({
+        roomId
     })
 })
 
