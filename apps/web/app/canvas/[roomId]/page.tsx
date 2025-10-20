@@ -1,3 +1,5 @@
+"use client"
+import initDraw from "draw"
 import { useEffect, useRef } from "react"
 
 export default function Canvas() {
@@ -6,18 +8,14 @@ export default function Canvas() {
     useEffect(() => {
         if (canvasRef.current) {
             const canvas = canvasRef.current
-            const ctx = canvas.getContext("2d")
-
-            if(!ctx){
-                return
-            }
             
+            initDraw(canvas)
         }
-    }, [])
+    }, [canvasRef])
 
     return (
         <div className="">
-
+            <canvas ref={canvasRef} width={window.innerWidth} height={window.innerHeight}  className="w-full h-screen"></canvas>
         </div>
     )
 }

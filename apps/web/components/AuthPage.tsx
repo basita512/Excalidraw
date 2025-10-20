@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react"
-// import { Button } from "../../../packages/ui/src/Button"
 import Button from "components/ui/Button";
 import BottomWarning from "components/ui/BottomWarning"
 import Heading from "components/ui/Heading"
@@ -64,7 +63,7 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
             <div className="card flex flex-col justify-center items-center bg-white py-2 px-7 rounded-xl shadow-xl shadow-[#3c7b74f6] w-90 h-max  ">
                 <Heading label={isSignIn ? 'Sign in' : 'Sign up'} />
 
-                <SubHeading label={isSignIn ? 'Enter your credentials to access your account' : 'Enter your information to crate an account'} />
+                <SubHeading label={isSignIn ? 'Enter your credentials to access your account' : 'Enter your information to create an account'} />
 
                 {
                     isSignIn ? '' : 
