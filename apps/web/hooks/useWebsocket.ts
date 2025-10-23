@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { WEBSOCKET_URL } from "../app/config"
+import { WEBSOCKET_URL } from "../config"
 
 export function useWebsocket() {
     const [loading, setLoading] = useState(true)

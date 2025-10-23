@@ -1,21 +1,19 @@
-"use client"
-import initDraw from "draw"
-import { useEffect, useRef } from "react"
+// Server component (async doesnt works in client components)
 
-export default function Canvas() {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
+import RoomCanvas from "components/RoomCanvas"
 
-    useEffect(() => {
-        if (canvasRef.current) {
-            const canvas = canvasRef.current
-            
-            initDraw(canvas)
-        }
-    }, [canvasRef])
+
+export default async function CanvasPage({params} : {
+    params: {
+        roomId : number
+    }
+}) {
+    const roomId = (await params).roomId
+    console.log(`Room id : ${roomId}`)
 
     return (
         <div className="">
-            <canvas ref={canvasRef} width={window.innerWidth} height={window.innerHeight}  className="w-full h-screen"></canvas>
+            <RoomCanvas roomId={roomId}/>
         </div>
     )
 }
