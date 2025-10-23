@@ -10,14 +10,7 @@ import cors from 'cors'
 const saltRounds = 10
 const app = express();
 app.use(express.json())
-
-app.use(
-  cors({
-    origin: "http://localhost:3000", 
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, 
-  })
-);
+app.use(cors());
 
 
 //----------------------------- When user Sign-up -----------------------------------------
@@ -176,7 +169,7 @@ app.post('/room', middleware, async (req, res) => {
 
 // ---------------------------- Retrive old chats -----------------------------------------
 
-app.get('/chats/:roomId', async (req, res) => {
+app.get('/canvas/:roomId', async (req, res) => {
     const roomId = Number(req.params.roomId)
     const messages = await prismaClient.chat.findMany({
         where: {
@@ -209,4 +202,4 @@ app.get('/room/:slug', async (req, res) => {
     })
 })
 
-app.listen(4000, () => console.log('HTTP server running on port 4000'));
+app.listen(3001, () => console.log('HTTP server running on port 3001'));

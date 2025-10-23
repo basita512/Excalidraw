@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "components/ui/Button";
 import BottomWarning from "components/ui/BottomWarning"
 import Heading from "components/ui/Heading"
@@ -8,7 +8,7 @@ import SubHeading  from "components/ui/SubHeading"
 import InputBox from "components/ui/InputBox"
 import ErrorAlert from "components/ui/ErrorAlert"
 import axios from "axios"
-import { BACKEND_URL } from "../app/config"
+import { HTTP_BACKEND_URL } from "../config"
 
 export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
     const isSignIn = AuthType
@@ -21,7 +21,7 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
         setErrorMessgae('')
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/signin`, {
+            const response = await axios.post(`${HTTP_BACKEND_URL}/signin`, {
                 username : username,
                 password : password
             })
@@ -43,7 +43,7 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
         setErrorMessgae('')
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/signup`, {
+            const response = await axios.post(`${HTTP_BACKEND_URL}/signup`, {
                 username : username,
                 password : password,
                 name : name
