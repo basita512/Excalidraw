@@ -178,7 +178,7 @@ app.get('/canvas/:roomId', async (req, res) => {
         orderBy : {
             id: "desc"
         },
-        take : 50
+        take : 500
     })
 
     res.status(200).json({
