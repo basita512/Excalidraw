@@ -1,11 +1,10 @@
 "use client"
 
-import initDraw from "draw"
 import { useEffect, useRef, useState } from "react"
 import TopBar from "./TopBar"
 import { Board } from "draw/board"
 
-export type Tool = "circle" | "rect" | "pencil"
+export type Tool = "circle" | "rect" | "line" | "pencil"
 
 export default function Canvas({roomId, socket} : {roomId:number, socket:WebSocket | null}) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -25,7 +24,7 @@ export default function Canvas({roomId, socket} : {roomId:number, socket:WebSock
             canvas.width = canvas.clientWidth
             canvas.height = canvas.clientHeight
 
-            const draw = new Board(canvasRef.current, roomId, socket)
+            const draw = new Board(canvas, roomId, socket)
             setBoard(draw)
             draw.setTool(selectedTool)
 

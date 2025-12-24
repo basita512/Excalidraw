@@ -4,33 +4,36 @@ import { useEffect, useState } from "react"
 import Button from "components/ui/Button";
 import BottomWarning from "components/ui/BottomWarning"
 import Heading from "components/ui/Heading"
-import SubHeading  from "components/ui/SubHeading"
+import SubHeading from "components/ui/SubHeading"
 import InputBox from "components/ui/InputBox"
 import ErrorAlert from "components/ui/ErrorAlert"
 import axios from "axios"
 import { HTTP_BACKEND_URL } from "../config"
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
-export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
+export default function AuthPage({ AuthType }: { AuthType: boolean }) {
     const isSignIn = AuthType
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [errorMessage, setErrorMessgae] = useState('')
 
-    const handleSignIn = async() => {
+    const handleSignIn = async () => {
         setErrorMessgae('')
 
         try {
             const response = await axios.post(`${HTTP_BACKEND_URL}/signin`, {
-                username : username,
-                password : password
+                username: username,
+                password: password
             })
 
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('userId', response.data.userId)
             // Add navigation to the canvas board
 
-        } catch (error : any) {
+        } catch (error: any) {
             if (error.response) {
                 setErrorMessgae(error.response.data.message)
             } else {
@@ -39,24 +42,26 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
         }
     }
 
-    const handleSignUp = async() => {
+    const handleSignUp = async () => {
         setErrorMessgae('')
 
         try {
             const response = await axios.post(`${HTTP_BACKEND_URL}/signup`, {
-                username : username,
-                password : password,
-                name : name
+                username: username,
+                password: password,
+                name: name,
+                email: email
             })
 
             localStorage.setItem('token', response.data.token)
             // Add navigation to canvas page
 
-        } catch (error : any) {
+        } catch (error: any) {
             if (error.response) setErrorMessgae(error.response.data.message)
             else setErrorMessgae('Something went wrong')
         }
     }
+
 
     return (
         <div className="bg-gradient-to-b from-[#29a699f6] via-[#83d4aef6] to-[#bcffe0f6] h-screen w-full flex flex-col justify-center items-center">
@@ -66,22 +71,32 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
                 <SubHeading label={isSignIn ? 'Enter your credentials to access your account' : 'Enter your information to create an account'} />
 
                 {
-                    isSignIn ? '' : 
-                        <InputBox
-                            label={'Name'}
-                            placeholder={'Enter your Name'}
-                            value={name}
-                            onChange={(e) => {setName(e.target.value)}}
-                            name={'name'}
-                            type={'text'}
-                        />
+                    isSignIn ? '' :
+                        <>
+                            <InputBox
+                                label={'Name'}
+                                placeholder={'Enter your Name'}
+                                value={name}
+                                onChange={(e) => { setName(e.target.value) }}
+                                name={'name'}
+                                type={'text'}
+                            />
+                            <InputBox
+                                label={'Email'}
+                                placeholder={'Enter your Email'}
+                                value={email}
+                                onChange={(e) => { setEmail(e.target.value) }}
+                                name={'email'}
+                                type={'text'}
+                            />
+                        </>
                 }
-                
+
                 <InputBox
                     label={'Username'}
                     placeholder={'Enter your Username'}
                     value={username}
-                    onChange={(e) => {setUsername(e.target.value)}}
+                    onChange={(e) => { setUsername(e.target.value) }}
                     name={'Username'}
                     type={'text'}
                 />
@@ -90,22 +105,48 @@ export default function AuthPage ({ AuthType } : { AuthType : boolean }) {
                     label={'Password'}
                     placeholder={'Enter your Password'}
                     value={password}
-                    onChange={(e) => {setPassword(e.target.value)}}
+                    onChange={(e) => { setPassword(e.target.value) }}
                     name={'password'}
                     type={'password'}
                 />
 
-                { errorMessage && <ErrorAlert errorMessage={errorMessage} /> }
+                {errorMessage && <ErrorAlert errorMessage={errorMessage} />}
 
                 <Button
                     className=""
                     label={isSignIn ? 'Sign in' : 'Sign up'}
-                    onClick={isSignIn ? handleSignIn : handleSignUp}/>
+                    onClick={isSignIn ? handleSignIn : handleSignUp} />
 
-                <BottomWarning 
-                    label={isSignIn ? 'Dont have an account ? ' : 'Already have an account ? '} 
-                    bottomText={isSignIn ? 'Sign Up' : 'Login' } 
+                <BottomWarning
+                    label={isSignIn ? 'Dont have an account ? ' : 'Already have an account ? '}
+                    bottomText={isSignIn ? 'Sign Up' : 'Login'}
                     to={isSignIn ? '/signup' : '/signin'} />
+
+                <div className="flex items-center w-full my-4">
+                    <div className="flex-1 border-t border-gray-300"></div>
+                    <div className="px-4 text-sm text-gray-500">OR</div>
+                    <div className="flex-1 border-t border-gray-300"></div>
+                </div>
+
+                <div className="w-full mb-6">
+                    <GoogleLogin
+                        width="300"
+                        onSuccess={async (credentialResponse) => {
+                            try {
+                                const response = await axios.post(`${HTTP_BACKEND_URL}/signin/google`, {
+                                    idToken: credentialResponse.credential
+                                });
+                                localStorage.setItem('token', response.data.token)
+                                localStorage.setItem('userId', response.data.userId)
+                                // Add navigation
+                            } catch (e) {
+                                console.error(e)
+                            }
+
+                        }}
+                        onError={() => console.log("Error loggin in with google")} />
+                </div>
+
             </div>
         </div>
     )
