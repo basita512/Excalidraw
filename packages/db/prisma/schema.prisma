@@ -16,6 +16,8 @@ model User {
   password  String
   rooms     Room[]  //A user can have multiple Rooms (one to many relationship) but a room can a one user
   chats     Chat[]
+  googleId  String? @unique
+  email     String? @unique
 }
 
 model Room {
