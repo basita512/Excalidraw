@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Button from "components/ui/Button";
 import BottomWarning from "components/ui/BottomWarning"
 import Heading from "components/ui/Heading"
@@ -10,7 +10,6 @@ import ErrorAlert from "components/ui/ErrorAlert"
 import axios from "axios"
 import { HTTP_BACKEND_URL } from "../config"
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 
 export default function AuthPage({ AuthType }: { AuthType: boolean }) {
     const isSignIn = AuthType

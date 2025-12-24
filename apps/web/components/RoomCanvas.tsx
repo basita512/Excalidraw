@@ -1,6 +1,6 @@
 "use client"
 import { WEBSOCKET_URL } from "config"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Canvas from "./Canvas"
 
 
@@ -28,7 +28,7 @@ export default function RoomCanvas({roomId} : { roomId:number }) {
             console.log(data)
             ws.send(data)
         }
-    }, [token])
+    }, [token, roomId])
 
     if (!socket) {
         return <div>Connecting to the Server..........</div>

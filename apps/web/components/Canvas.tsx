@@ -6,7 +6,7 @@ import { Board } from "draw/board"
 
 export type Tool = "circle" | "rect" | "line" | "pencil"
 
-export default function Canvas({roomId, socket} : {roomId:number, socket:WebSocket | null}) {
+export default function Canvas({ roomId, socket }: { roomId: number, socket: WebSocket | null }) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const initialized = useRef(false)
     const [selectedTool, setSelectedTool] = useState<Tool>("circle")
@@ -18,19 +18,19 @@ export default function Canvas({roomId, socket} : {roomId:number, socket:WebSock
 
     useEffect(() => {
         if (!canvasRef.current || !socket || initialized.current) return
-            initialized.current = true
-            const canvas = canvasRef.current
+        initialized.current = true
+        const canvas = canvasRef.current
 
-            canvas.width = canvas.clientWidth
-            canvas.height = canvas.clientHeight
+        canvas.width = canvas.clientWidth
+        canvas.height = canvas.clientHeight
 
-            const draw = new Board(canvas, roomId, socket)
-            setBoard(draw)
+        const draw = new Board(canvas, roomId, socket)
+        setBoard(draw)
             draw.setTool(selectedTool)
 
-            return () => {
-                draw.destroy()
-            }
+        return () => {
+            draw.destroy()
+        }
     }, [roomId, socket])
 
     return(
