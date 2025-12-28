@@ -9,18 +9,18 @@ jobs:
     name: Deploy everything(http/ws/fe) to staging
     runs-on: ubuntu-latest
     steps:
-       - name: ssh into staging server
-       - run: |
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
-            chmod 600 ~/ssh_key
-            ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.62.19.19 << 'EOF'
-              cd Excalidraw/
-              git pull origin main
-              pnpm install
-              pnpm run build
-              pm2 restart frontend-server
-              pm2 restart http-server
-              pm2 restart ws-server
-            EOF
+    - name: ssh into staging server
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
+        chmod 600 ~/ssh_key
+        ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.62.19.19 << 'EOF'
+          cd Excalidraw/
+          git pull origin main
+          pnpm install
+          pnpm run build
+          pm2 restart frontend-server
+          pm2 restart http-server
+          pm2 restart ws-server
+        EOF
           
         
