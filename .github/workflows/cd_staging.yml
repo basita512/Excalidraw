@@ -13,8 +13,8 @@ jobs:
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
         chmod 600 ~/ssh_key
-        ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.62.19.19 << 'EOF'
-          cd Excalidraw/
+        ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@56.228.42.84 "sudo bash -s" << 'EOF'
+          cd /root/Excalidraw
           git pull origin main
           pnpm install
           pnpm run build
