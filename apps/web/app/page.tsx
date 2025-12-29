@@ -7,7 +7,7 @@ export default function Home() {
   const router = useRouter()
 
   return (
-    <div className="w-full h-screen flex flex-col gap-6 justify-center items-center">
+    <div className="w-full h-screen bg-black flex flex-col gap-6 justify-center items-center">
       <div className=""><h1>Welcome to the landing Page of MindCanvas</h1></div>
       
       <button className="border-2 bg-lime-600 p-2" onClick={() => router.push('/signin')}>Sign In</button>
